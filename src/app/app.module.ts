@@ -1,68 +1,99 @@
-import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
-import {MenuItem} from "primeng/primeng";
-import {Menu} from "primeng/components/menu/menu";
-import {ActivatedRoute, Router} from "@angular/router";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { ApolloModule } from 'apollo-angular';
+import { provideClient } from './client';
 
-declare var jQuery :any;
+import { MenuModule, PanelModule, ChartModule,
+    InputTextModule, ButtonModule, InputMaskModule,
+     InputTextareaModule, EditorModule, CalendarModule,
+      RadioButtonModule, FieldsetModule, DropdownModule,
+       MultiSelectModule, ListboxModule, SpinnerModule,
+        SliderModule, RatingModule, DataTableModule,
+       ContextMenuModule, TabViewModule, DialogModule,
+          StepsModule, ScheduleModule, TreeModule,
+           GMapModule, DataGridModule, TooltipModule,
+            ConfirmationService, ConfirmDialogModule,
+             GrowlModule, DragDropModule, GalleriaModule } from 'primeng/primeng';
+  
+import { AppComponent } from './app.component';
+import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { StatisticComponent } from './statistic/statistic.component';
+import { TimesheetComponent } from './timesheet/timesheet.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+import { AlltimesComponent } from './alltimes/alltimes.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FielderrorsComponent } from './fielderrors/fielderrors.component';
+
+
+const appRoutes: Routes = [
+ { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+   { path: 'dashboard', component: DashboardComponent },
+   { path: 'alltimes', component: AlltimesComponent },
+   { path: 'timesheet', component: TimesheetComponent },
+   { path: 'projects', component: ProjectsComponent },
+   { path: 'profile', component: ProfileComponent },
+   { path: 'settings', component: SettingsComponent }
+];
+
+@NgModule({
+ declarations: [
+   AppComponent,
+   DashboardComponent,
+   StatisticComponent,
+   TimesheetComponent,
+   ProjectsComponent,
+   AlltimesComponent,
+   ProfileComponent,
+   SettingsComponent,
+   FielderrorsComponent
+ ],
+ imports: [
+   BrowserModule,
+   FormsModule,
+   ReactiveFormsModule,
+   HttpModule,
+   RouterModule.forRoot(appRoutes, { useHash: true }),
+   ApolloModule.forRoot(provideClient),
+   BrowserAnimationsModule,
+   MenuModule,
+   PanelModule,
+   ChartModule,
+   InputTextModule,
+   ButtonModule,
+   InputMaskModule,
+   InputTextareaModule,
+   EditorModule,
+   CalendarModule,
+   RadioButtonModule,
+   FieldsetModule,
+   DropdownModule,
+   MultiSelectModule,
+   ListboxModule,
+   SpinnerModule,
+   SliderModule,
+   RatingModule,
+   DataTableModule,
+   ContextMenuModule,
+   TabViewModule,
+   DialogModule,
+   StepsModule,
+   ScheduleModule,
+   TreeModule,
+   GMapModule,
+   DataGridModule,
+   TooltipModule,
+   ConfirmDialogModule,
+   GrowlModule,
+   DragDropModule,
+   GalleriaModule
+ ],
+ providers: [ConfirmationService],
+ bootstrap: [AppComponent]
 })
-export class AppComponent implements OnInit, AfterViewInit {
-
-  menuItems: MenuItem[];
-  miniMenuItems: MenuItem[];
-
-  @ViewChild('bigMenu') bigMenu : Menu;
-  @ViewChild('smallMenu') smallMenu : Menu;
-
-  constructor(private router : Router) {
-
-  }
-
-  ngOnInit() {
-
-    let handleSelected = function(event) {
-      let allMenus = jQuery(event.originalEvent.target).closest('ul');
-      let allLinks = allMenus.find('.menu-selected');
-
-      allLinks.removeClass("menu-selected");
-      let selected = jQuery(event.originalEvent.target).closest('a');
-      selected.addClass('menu-selected');
-    }
-
-    this.menuItems = [
-      {label: 'Dashboard', icon: 'fa-home', routerLink: ['/dashboard'], command: (event) => handleSelected(event)},
-      {label: 'All Times', icon: 'fa-calendar', routerLink: ['/alltimes'], command: (event) => handleSelected(event)},
-      {label: 'My Timesheet', icon: 'fa-clock-o', routerLink: ['/timesheet'], command: (event) => handleSelected(event)},
-      {label: 'Add Project', icon: 'fa-tasks', routerLink: ['/projects'], command: (event) => handleSelected(event)},
-      {label: 'My Profile', icon: 'fa-users', routerLink: ['/profile'], command: (event) => handleSelected(event)},
-      {label: 'Settings', icon: 'fa-sliders', routerLink: ['/settings'], command: (event) => handleSelected(event)},
-    ]
-
-    this.miniMenuItems = [];
-    this.menuItems.forEach( (item : MenuItem) => {
-      let miniItem = { icon: item.icon, routerLink: item.routerLink }
-      this.miniMenuItems.push(miniItem);
-    })
-
-  }
-
-  selectInitialMenuItemBasedOnUrl() {
-    let path = document.location.pathname;
-    let menuItem = this.menuItems.find( (item) => { return item.routerLink[0] == path });
-    if (menuItem) {
-      let selectedIcon = this.bigMenu.container.querySelector(`.${menuItem.icon}`);
-      jQuery(selectedIcon).closest('li').addClass('menu-selected');
-    }
-  }
-
-  ngAfterViewInit() {
-    this.selectInitialMenuItemBasedOnUrl();
-  }
-
-
-
-}
+export class AppModule { }

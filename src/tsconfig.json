@@ -6,7 +6,9 @@
     "experimentalDecorators": true,
     "lib": [
       "es2016",
-      "dom"
+      
+      "dom",
+      "esnext.asynciterable"
     ],
     "mapRoot": "./",
     "module": "es2015",
